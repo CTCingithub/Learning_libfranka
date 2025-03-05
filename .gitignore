@@ -1,3 +1,5 @@
-examples/
-*/build/
-*/*/build/
+.vscode/
+libfranka_examples/
+build/
+bin/
+lib/
