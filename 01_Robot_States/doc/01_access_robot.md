@@ -48,3 +48,42 @@ int main(int argc, char** argv) {
 ## 2. 主要修改
 
 使用`yaml-cpp`库，将机器人IP地址放在配置文件中，从而使项目更规范。
+
+```c++
+std::string file = std::filesystem::current_path().parent_path().string() + "/config/FR3.yaml";
+    YAML::Node config = YAML::LoadFile(file);
+    const std::string robot_ip = config["Robot_ip"].as<std::string>();
+    std::cout << "IP Address of Franka Research 3 Robot:" << robot_ip << std::endl;
+```
+
+这里读取一次关节角度，并输出到终端。
+
+```c++
+franka::Robot Myrobot(robot_ip);
+franka::RobotState current_state = Myrobot.readOnce();
+
+// Print Read Joint Angle(rad)
+std::cout << "Read Joint Angle(rad): "
+          << current_state.q << std::endl;
+
+// Print Read Joint Angle(degree)
+std::cout << "Read Joint Angle(degree): [";
+for (const auto &joint : current_state.q)
+{
+  std::cout << joint / M_PI * 180;
+  if (&joint != &current_state.q.back())
+  {
+    std::cout << ", ";
+  }
+}
+std::cout << "]" << std::endl;
+```
+
+运行结果：
+
+```console
+$ ./01_access_robot 
+IP Address of Franka Research 3 Robot: 172.16.0.2
+Read Joint Angle(rad): [0.0872911, -0.744719, 0.0296455, -2.21447, 0.00365254, 1.49453, 0.876626]
+Read Joint Angle(degree): [5.00141, -42.6693, 1.69856, -126.88, 0.209275, 85.6305, 50.227]
+```
