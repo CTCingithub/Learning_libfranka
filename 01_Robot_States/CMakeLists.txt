@@ -34,8 +34,8 @@ target_link_libraries(01_access_robot
     Franka::Franka
     yaml-cpp::yaml-cpp
 )
-add_executable(02_transformation_matrix examples/02_transformation_matrix.cpp)
-target_link_libraries(02_transformation_matrix
+add_executable(02_frame examples/02_frame.cpp)
+target_link_libraries(02_frame
     Franka::Franka
     yaml-cpp::yaml-cpp
     read-config-yaml

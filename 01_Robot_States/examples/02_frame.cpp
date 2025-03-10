@@ -6,7 +6,8 @@
 #include "ReadConfig.h"
 
 #include <franka/exception.h>
-#include <franka/robot.h>
+// #include <franka/robot.h>
+#include <franka/model.h>
 
 int main(int argc, char **argv)
 {
@@ -33,6 +34,8 @@ int main(int argc, char **argv)
             }
         }
         std::cout << "]" << std::endl;
+
+        franka::Model Mymodel(Myrobot.loadModel());
     }
     catch (franka::Exception const &e)
     {
