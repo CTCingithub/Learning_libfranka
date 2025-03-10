@@ -7,10 +7,8 @@
 #include "yaml-cpp/yaml.h"
 
 const std::filesystem::path CurrentPath = std::filesystem::current_path();
-const std::filesystem::path ParentPath = CurrentPath.parent_path();
-const std::string DefaultConfigurationFile = ParentPath.string() + "/config/FR3.yaml";
 
-// extern const std::string DefaultConfigurationFile;
-YAML::Node GetConfig(const std::string &ConfigurationFile = DefaultConfigurationFile);
+std::string FindConfigFile(const std::filesystem::path &CurrentPath);
+YAML::Node GetConfig(const std::string &ConfigurationFile = FindConfigFile(CurrentPath));
 
 #endif
