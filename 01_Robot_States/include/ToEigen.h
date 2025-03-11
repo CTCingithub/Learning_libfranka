@@ -3,6 +3,6 @@
 
 #include <Eigen/Dense>
 
-Eigen::Matrix4d GetTransMat_4x4(std::array<double, 16> TransMat);
+Eigen::Matrix4d GetTransMat_4x4(const std::array<double, 16> &TransMat);
 
 #endif
