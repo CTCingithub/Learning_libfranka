@@ -3,17 +3,16 @@
 #include <string>
 
 #include "yaml-cpp/yaml.h"
+
+#include "EnableArrayPrint.h"
 #include "ReadConfig.h"
+#include "ToEigen.h"
 
 #include <franka/exception.h>
-// #include <franka/robot.h>
 #include <franka/model.h>
 
 int main(int argc, char **argv)
 {
-    // Load Configuration
-    // std::string file = std::filesystem::current_path().parent_path().string() + "/config/FR3.yaml";
-    // YAML::Node config = YAML::LoadFile(file);
     YAML::Node config = GetConfig();
     const std::string robot_ip = config["Robot_ip"].as<std::string>();
     std::cout << "IP Address of Franka Research 3 Robot: " << robot_ip << std::endl;
@@ -36,6 +35,25 @@ int main(int argc, char **argv)
         std::cout << "]" << std::endl;
 
         franka::Model Mymodel(Myrobot.loadModel());
+
+        // Print Frame and Transformation Matrixes
+        int joint_index = 1;
+        for (franka::Frame frame = franka::Frame::kJoint1;
+             frame <= franka::Frame::kJoint7;
+             frame++)
+        {
+            std::cout << "Frame: " << joint_index << std::endl;
+            std::cout << "T_" << joint_index << "_0: " << std::endl;
+            std::cout << "From libfranka API, in std::array<double, 16> format: "
+                      << std::endl
+                      << Mymodel.pose(frame, current_state)
+                      << std::endl;
+            std::cout << "In Eigen::Matrix4d format: "
+                      << std::endl
+                      << GetTransMat_4x4(Mymodel.pose(frame, current_state))
+                      << std::endl;
+            joint_index++;
+        }
     }
     catch (franka::Exception const &e)
     {

@@ -27,6 +27,10 @@ add_library(read-config-yaml SHARED src/ReadConfig.cpp)
 target_link_libraries(read-config-yaml
     yaml-cpp::yaml-cpp
 )
+add_library(toEigen SHARED src/ToEigen.cpp)
+target_link_libraries(toEigen
+    Eigen3::Eigen
+)
 
 # Build executable
 add_executable(01_access_robot examples/01_access_robot.cpp)
@@ -39,4 +43,5 @@ target_link_libraries(02_frame
     Franka::Franka
     yaml-cpp::yaml-cpp
     read-config-yaml
+    toEigen
 )
