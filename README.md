@@ -8,8 +8,9 @@ The dependency are shown as follows:
 
 |Library|Version|
 |:---:|:---:|
-|[libfranka](https://github.com/frankaemika/libfranka)|0.15.0|
-|[yaml-cpp](https://github.com/jbeder/yaml-cpp)|0.8.0|
+|[libfranka](https://github.com/frankaemika/libfranka)|$0.15.0$|
+|[yaml-cpp](https://github.com/jbeder/yaml-cpp)|$0.8.0$|
+|[Eigen](https://eigen.tuxfamily.org/dox/)|$\geq 3.3.7$|
 
 ## 2. Editor Settings
 
