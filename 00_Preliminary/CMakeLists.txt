@@ -19,7 +19,6 @@ include_directories(
 find_package(Eigen3 REQUIRED)
 
 # Build shared library
-add_library(print_cache SHARED src/PrintCache.cpp)
 
 # Build executable
 add_executable(01_try-catch examples/01_try-catch.cpp)
@@ -27,5 +26,5 @@ add_executable(01_try-catch examples/01_try-catch.cpp)
 add_executable(02_circular_buffer examples/02_circular_buffer.cpp)
 target_link_libraries(02_circular_buffer
     Eigen3::Eigen
-    print_cache
+    # print_cache
 )
