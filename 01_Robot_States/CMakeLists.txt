@@ -31,6 +31,11 @@ add_library(toEigen SHARED src/ToEigen.cpp)
 target_link_libraries(toEigen
     Eigen3::Eigen
 )
+add_library(motion-gen SHARED src/MotionGenerator.cpp)
+target_link_libraries(motion-gen
+    Eigen3::Eigen
+    Franka::Franka
+)
 
 # Build executable
 add_executable(01_access_robot examples/01_access_robot.cpp)
@@ -38,10 +43,20 @@ target_link_libraries(01_access_robot
     Franka::Franka
     yaml-cpp::yaml-cpp
 )
+
 add_executable(02_frame examples/02_frame.cpp)
 target_link_libraries(02_frame
     Franka::Franka
     yaml-cpp::yaml-cpp
+    read-config-yaml
+    toEigen
+)
+
+add_executable(03_realtime_state examples/03_realtime_state.cpp)
+target_link_libraries(03_realtime_state
+    Franka::Franka
+    yaml-cpp::yaml-cpp
+    motion-gen
     read-config-yaml
     toEigen
 )
