@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <thread>
-#include <mutex>
 
 void do_some_work(int num)
 {
@@ -10,7 +9,7 @@ void do_some_work(int num)
 
 int main(int argc, char const *argv[])
 {
-    int threadNums = 3;
+    int threadNums = 8;
     std::vector<std::thread> threadList;
     threadList.reserve(threadNums);
 

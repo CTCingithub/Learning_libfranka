@@ -17,8 +17,14 @@ include_directories(
 
 # Load dependencies
 find_package(Eigen3 REQUIRED)
+find_package(Threads REQUIRED)
+find_package(spdlog REQUIRED)
 
 # Build shared library
+add_library(data-logger SHARED src/DataLogger.cpp)
+target_link_libraries(data-logger
+    spdlog::spdlog
+)
 
 # Build executable
 add_executable(01_try-catch examples/01_try-catch.cpp)
@@ -26,5 +32,15 @@ add_executable(01_try-catch examples/01_try-catch.cpp)
 add_executable(02_circular_buffer examples/02_circular_buffer.cpp)
 target_link_libraries(02_circular_buffer
     Eigen3::Eigen
-    # print_cache
+)
+
+add_executable(03_multi_thread_wrong_output examples/03_multi_thread_wrong_output.cpp)
+target_link_libraries(03_multi_thread_wrong_output
+    Threads::Threads
+)
+
+add_executable(05_spdlog examples/05_spdlog.cpp)
+target_link_libraries(05_spdlog
+    spdlog::spdlog
+    data-logger
 )
