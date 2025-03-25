@@ -3,3 +3,4 @@ libfranka_examples/
 build/
 bin/
 lib/
+.cache/
