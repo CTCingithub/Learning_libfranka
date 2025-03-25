@@ -1,8 +1,5 @@
-#include <iostream>
 #include <string>
 #include <filesystem>
-
-#include "spdlog/spdlog.h"
 
 std::string FindLoggerPath(const std::filesystem::path &CurrentPath)
 {
