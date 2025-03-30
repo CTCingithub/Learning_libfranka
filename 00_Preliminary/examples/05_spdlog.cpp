@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
   double_logger.info("{:.2f}, {:.2f}, {:.2f}, {:.2f}", data_1[0], data_1[1],
                      data_1[2], data_1[3]);
   double_logger.info("{:.2f}, {:.2f}, {:.2f}, {:.2f}", data_2[0], data_2[1],
-                      data_2[2], data_2[3]);
+                     data_2[2], data_2[3]);
 
   return 0;
 }
