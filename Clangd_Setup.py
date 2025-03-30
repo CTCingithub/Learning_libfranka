@@ -74,11 +74,12 @@ def get_max_version(path):
     return max(folders)
 
 
-def write_to_file(dirs_list, std_cpp_setting):
+def write_to_file(dirs_list, settings):
     with open(".clangd", "w") as f:
         f.write("CompileFlags:\n")
         f.write("  Add:\n")
-        f.write(f'  - "{std_cpp_setting}"\n')
+        for i in settings[1:]:
+            f.write(f'  - "{i}"\n')
         f.write(
             f'  - "-isystem/usr/include/c++/{get_max_version("/usr/include/c++")}"\n'
         )
@@ -90,6 +91,6 @@ def write_to_file(dirs_list, std_cpp_setting):
 
 
 if __name__ == "__main__":
-    std_cpp_setting = sys.argv[1]
+    settings = sys.argv
     dir_list = collect_file_dirs()
-    write_to_file(dir_list, std_cpp_setting)
+    write_to_file(dir_list, settings)
