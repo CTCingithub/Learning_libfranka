@@ -9,7 +9,6 @@ project(Preliminary)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
-
 # Add include directories
 include_directories(
     ${PROJECT_SOURCE_DIR}/include
@@ -17,7 +16,6 @@ include_directories(
 
 # Load dependencies
 find_package(Eigen3 REQUIRED)
-find_package(Threads REQUIRED)
 find_package(spdlog REQUIRED)
 
 # Build shared library
@@ -34,13 +32,8 @@ target_link_libraries(02_circular_buffer
     Eigen3::Eigen
 )
 
-add_executable(03_multi_thread_wrong_output examples/03_multi_thread_wrong_output.cpp)
-target_link_libraries(03_multi_thread_wrong_output
-    Threads::Threads
-)
-
-add_executable(05_spdlog examples/05_spdlog.cpp)
-target_link_libraries(05_spdlog
+add_executable(03_spdlog examples/03_spdlog.cpp)
+target_link_libraries(03_spdlog
     spdlog::spdlog
     data-logger
 )
