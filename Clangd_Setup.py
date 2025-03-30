@@ -37,7 +37,8 @@ def is_ignored(path, patterns):
                 parent_relative = parent.relative_to(Path.cwd()).as_posix()
                 if fnmatch.fnmatch(parent_relative, pattern):
                     return True
-                if pattern.endswith("/") and parent_relative == pattern.rstrip("/"):
+                if pattern.endswith("/") and parent_relative == pattern.rstrip(
+                        "/"):
                     return True
             except ValueError:
                 continue
@@ -52,8 +53,7 @@ def collect_file_dirs():
 
     for file_path in current_dir.rglob("*"):
         if file_path.suffix.lower() in format_list and not is_ignored(
-            file_path, ignore_patterns
-        ):
+                file_path, ignore_patterns):
             parent_dir = file_path.parent.absolute()
             dir_set.add(str(parent_dir))
 
