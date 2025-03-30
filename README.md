@@ -14,29 +14,8 @@ The dependency are shown as follows:
 
 ## 2. Editor Settings
 
-I personally use *Visual Studio Code* as my editor. In order to avoid unnecessary editor warnings, the `c_cpp_properties.json` is defined as:
+I personally use *Visual Studio Code* as my editor. I swithed to [Clangd](https://clangd.llvm.org/) for code completion and other features. In order to generate workspace configuration `.clangd` file, I wrote a python script `Clangd_Setup.py`. Run the following command in terminal to collect all absolute paths:
 
-```json
-{
-  "configurations": [
-    {
-      "name": "linux-gcc-x64",
-      "includePath": [
-        "${workspaceFolder}/**",
-        "${workspaceFolder}/**/include/**",
-        "/usr/include/**",
-        "/usr/include/**/**",
-        "/usr/local/include/**"
-      ],
-      "compilerPath": "/usr/bin/gcc",
-      "cStandard": "${default}",
-      "cppStandard": "${default}",
-      "intelliSenseMode": "linux-gcc-x64",
-      "compilerArgs": [
-        "-std=c++17"
-      ]
-    }
-  ],
-  "version": 4
-}
+```bash
+python Clangd_Setup.py -std=c++17
 ```
