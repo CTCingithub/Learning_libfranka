@@ -7,8 +7,8 @@ int main(int argc, char **argv)
     {
         // throw std::runtime_error("Something went wrong"); when encountered error
         int a = 10, b = 0;
-        std::cout << "a =" << a << std::endl;
-        std::cout << "b =" << b << std::endl;
+        std::cout << "a = " << a << std::endl;
+        std::cout << "b = " << b << std::endl;
         std::cout << "Trying to compute a/b" << std::endl;
         if (b == 0)
         {
