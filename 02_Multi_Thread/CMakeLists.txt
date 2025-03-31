@@ -30,3 +30,8 @@ add_executable(02_wrong_output examples/02_wrong_output.cpp)
 target_link_libraries(02_wrong_output
     Threads::Threads
 )
+
+add_executable(03_sleeping examples/03_sleeping.cpp)
+target_link_libraries(03_sleeping
+    Threads::Threads
+)
