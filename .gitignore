@@ -4,4 +4,5 @@ build/
 bin/
 lib/
 .cache/
+ModernCpp-ConcurrentProgramming-Tutorial/
 .clangd

@@ -17,5 +17,5 @@ The dependency are shown as follows:
 I personally use *Visual Studio Code* as my editor. I swithed to [Clangd](https://clangd.llvm.org/) for code completion and other features. In order to generate workspace configuration `.clangd` file, I wrote a python script `Clangd_Setup.py`. Run the following command in terminal to collect all absolute paths:
 
 ```bash
-python Clangd_Setup.py -std=c++17
+python Clangd_Setup.py -std=c++17 -isystem/usr/include/eigen3
 ```
