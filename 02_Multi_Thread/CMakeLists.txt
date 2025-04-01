@@ -35,3 +35,8 @@ add_executable(03_sleeping examples/03_sleeping.cpp)
 target_link_libraries(03_sleeping
     Threads::Threads
 )
+
+add_executable(04_use_mutex examples/04_use_mutex.cpp)
+target_link_libraries(04_use_mutex
+    Threads::Threads
+)
