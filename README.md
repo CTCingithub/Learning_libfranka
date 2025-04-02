@@ -19,3 +19,9 @@ I personally use *Visual Studio Code* as my editor. I swithed to [Clangd](https:
 ```bash
 python Clangd_Setup.py -std=c++17 -isystem/usr/include/eigen3
 ```
+
+Besides, the bash script [Build.sh](./Build.sh) helps you easily build with `Cmake` under your working directory, such as [00_Prelimiary/](./00_Preliminary/). Run the following command in your editor's terminal:
+
+```bash
+../Build.sh
+```
