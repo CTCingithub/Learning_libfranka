@@ -5,10 +5,15 @@
 #include <iostream>
 
 template <typename Type> void PrintCache(boost::circular_buffer<Type> &cache) {
-  for (int i = 0; i < cache.capacity() - 1; i++) {
-    std::cout << "Element " << i + 1 << ": " << cache[i] << ", ";
+  for (int i = 0; i < cache.size(); i++) {
+    std::cout << "Element " << i + 1 << ": " << cache[i];
+    if (i != cache.size() - 1) {
+      std::cout << ", ";
+    }
+    else {
+      std::cout << std::endl;
+    }
   }
-  std::cout << "Element " << cache.capacity() << ": " << cache.back() << std::endl;
 }
 
 #endif

@@ -40,3 +40,8 @@ add_executable(04_use_mutex examples/04_use_mutex.cpp)
 target_link_libraries(04_use_mutex
     Threads::Threads
 )
+
+add_executable(04_use_mutex_struct examples/04_use_mutex_struct.cpp)
+target_link_libraries(04_use_mutex_struct
+    Threads::Threads
+)
