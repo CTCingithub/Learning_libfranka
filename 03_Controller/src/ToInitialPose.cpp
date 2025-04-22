@@ -1,6 +1,5 @@
 #include <array>
 #include <cmath>
-#include <functional>
 #include <iostream>
 
 #include "yaml-cpp/yaml.h"
