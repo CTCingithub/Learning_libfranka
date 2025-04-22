@@ -64,3 +64,12 @@ target_link_libraries(01_cartesian_impedance_control
     motion-gen
     default-behavior
 )
+
+add_executable(02_sampling_control examples/02_sampling_control.cpp)
+target_link_libraries(02_sampling_control
+    Franka::Franka
+    read-config-yaml
+    motion-gen
+    default-behavior
+    Eigen3::Eigen
+)
