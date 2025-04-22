@@ -37,10 +37,26 @@ target_link_libraries(motion-gen
 add_library(default-behavior SHARED src/DefaultBehavior.cpp)
 target_link_libraries(default-behavior
     Franka::Franka
+    motion-gen
 )
 
 
 # Build executable
+add_executable(ToInitialPose src/ToInitialPose.cpp)
+target_link_libraries(ToInitialPose
+    Franka::Franka
+    read-config-yaml
+    default-behavior
+)
+
+add_executable(00_point2point examples/00_point2point.cpp)
+target_link_libraries(00_point2point
+    Franka::Franka
+    read-config-yaml
+    motion-gen
+    default-behavior
+)
+
 add_executable(01_cartesian_impedance_control examples/01_cartesian_impedance_control.cpp)
 target_link_libraries(01_cartesian_impedance_control
     Franka::Franka
