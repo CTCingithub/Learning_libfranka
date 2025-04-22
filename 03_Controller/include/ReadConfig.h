@@ -1,14 +1,20 @@
 #ifndef READCONFIG_H
 #define READCONFIG_H
 
-#include <string>
 #include <filesystem>
+#include <string>
 
 #include "yaml-cpp/yaml.h"
 
-const std::filesystem::path CurrentPath = std::filesystem::current_path();
+namespace {
+const std::filesystem::path currentPath = std::filesystem::current_path();
+const std::string default_config_file = "FR3.yaml";
+} // anonymous namespace
 
-std::string FindConfigFile(const std::filesystem::path &CurrentPath);
-YAML::Node GetConfig(const std::string &ConfigurationFile = FindConfigFile(CurrentPath));
+std::string
+FindConfigFile(const std::string &Filename = default_config_file,
+               const std::filesystem::path &CurrentPath = currentPath);
+YAML::Node GetConfig(const std::string &ConfigurationFile =
+                         FindConfigFile(default_config_file, currentPath));
 
 #endif
