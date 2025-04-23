@@ -5,10 +5,9 @@
 #include "franka/robot.h"
 
 namespace Controllers {
-PDController::PDController(
-    size_t dq_filter_size,
-    const std::array<double, 7> &K_P, // NOLINT(readability-identifier-naming)
-    const std::array<double, 7> &K_D) // NOLINT(readability-identifier-naming)
+PDController::PDController(size_t dq_filter_size,
+                           const std::array<double, 7> &K_P,
+                           const std::array<double, 7> &K_D)
     : dq_current_filter_position_(0), dq_filter_size_(dq_filter_size),
       K_P_(K_P), K_D_(K_D) {
   std::fill(dq_d_.begin(), dq_d_.end(), 0);
