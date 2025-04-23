@@ -20,12 +20,11 @@
 void setDefaultBehavior(franka::Robot &robot);
 
 /**
- * An example showing how to generate a joint pose motion to a goal position. Adapted from:
- * Wisama Khalil and Etienne Dombre. 2002. Modeling, Identification and Control of Robots
- * (Kogan Page Science Paper edition).
+ * An example showing how to generate a joint pose motion to a goal position.
+ * Adapted from: Wisama Khalil and Etienne Dombre. 2002. Modeling,
+ * Identification and Control of Robots (Kogan Page Science Paper edition).
  */
-class MotionGenerator
-{
+class MotionGenerator {
 public:
   /**
    * Creates a new MotionGenerator instance for a target q.
@@ -33,7 +32,8 @@ public:
    * @param[in] speed_factor General speed factor in range [0, 1].
    * @param[in] q_goal Target joint positions.
    */
-  MotionGenerator(const std::array<double, 7> q_goal, double speed_factor = 0.1);
+  MotionGenerator(const std::array<double, 7> q_goal,
+                  double speed_factor = 0.1);
 
   /**
    * Sends joint position calculations
@@ -43,7 +43,8 @@ public:
    *
    * @return Joint positions for use inside a control loop.
    */
-  franka::JointPositions operator()(const franka::RobotState &robot_state, franka::Duration period);
+  franka::JointPositions operator()(const franka::RobotState &robot_state,
+                                    franka::Duration period);
 
 private:
   using Vector7d = Eigen::Matrix<double, 7, 1, Eigen::ColMajor>;
@@ -66,7 +67,8 @@ private:
 
   double time_ = 0.0;
 
-  Vector7d dq_max_ = (Vector7d() << 2.0, 2.0, 2.0, 2.0, 2.5, 2.5, 2.5).finished();
+  Vector7d dq_max_ =
+      (Vector7d() << 2.0, 2.0, 2.0, 2.0, 2.5, 2.5, 2.5).finished();
   Vector7d ddq_max_start_ = (Vector7d() << 5, 5, 5, 5, 5, 5, 5).finished();
   Vector7d ddq_max_goal_ = (Vector7d() << 5, 5, 5, 5, 5, 5, 5).finished();
 };
