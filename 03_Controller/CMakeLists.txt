@@ -34,6 +34,12 @@ target_link_libraries(motion-gen
     Franka::Franka
 )
 
+add_library(controllers SHARED src/Controllers.cpp)
+target_link_libraries(controllers
+    Eigen3::Eigen
+    Franka::Franka
+)
+
 add_library(default-behavior SHARED src/DefaultBehavior.cpp)
 target_link_libraries(default-behavior
     Franka::Franka
@@ -68,8 +74,8 @@ target_link_libraries(01_cartesian_impedance_control
 add_executable(02_sampling_control examples/02_sampling_control.cpp)
 target_link_libraries(02_sampling_control
     Franka::Franka
-    read-config-yaml
-    motion-gen
-    default-behavior
     Eigen3::Eigen
+    read-config-yaml
+    default-behavior
+    controllers
 )
