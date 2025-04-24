@@ -17,8 +17,10 @@
 #include "EnableArrayPrint.h"
 #include "ReadConfig.h"
 
-struct sampled_states_struct {
-  franka::RobotState state_sampled;
+struct state_logger {
+  std::array<double, 7> q;
+  std::array<double, 7> dq;
+  std::array<double, 7> tau;
 };
 
 namespace {
@@ -58,28 +60,29 @@ int main(int argc, char **argv) {
       controller_config["Amplitude"].as<std::array<double, 7>>();
   std::array<double, 7> omegas =
       controller_config["Omega"].as<std::array<double, 7>>();
+  bool coriolis_compensation =
+      controller_config["Coriolis_Compensation"].as<bool>();
+  bool gravity_compensation =
+      controller_config["Gravity_Compensation"].as<bool>();
+  std::cout << "Compensation:\n"
+            << "Coriolis: " << coriolis_compensation
+            << ", Gravity: " << gravity_compensation << std::endl;
 
   const int ts = controller_config["Sampling_Time"].as<int>();
   const double t_end = controller_config["End_Time"].as<double>();
   std::cout << "Sampling time: " << ts << " ms" << std::endl;
 
   // Parameters
-  const size_t joint_number{4};
   const size_t filter_size{1};
 
-  // NOLINTNEXTLINE(readability-identifier-naming)
-  const std::array<double, 7> K_P{
-      {200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0}};
-  // NOLINTNEXTLINE(readability-identifier-naming)
-  const std::array<double, 7> K_D{{10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 10.0}};
-  const double max_acceleration{1.0};
-
-  Controllers::PDController pd_controller(filter_size, K_P, K_D);
+  Controllers::PDController pd_controller(filter_size, Kp, Kd,
+                                          gravity_compensation);
 
   try {
     franka::Robot Myrobot(robot_ip);
     franka::Model Mymodel(Myrobot.loadModel());
 
+    Reach_Desired_Joint_Pose(Myrobot);
     Reach_Desired_Joint_Pose(Myrobot, q_desired);
     set_default_collision(Myrobot);
 
@@ -126,6 +129,8 @@ int main(int argc, char **argv) {
       motion_finished = joint_velocities.motion_finished;
       active_control->writeOnce(joint_velocities, torques);
     }
+
+    Reach_Desired_Joint_Pose(Myrobot);
 
   } catch (const franka::ControlException &e) {
     std::cout << e.what() << std::endl;

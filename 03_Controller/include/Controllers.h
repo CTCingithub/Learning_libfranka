@@ -8,7 +8,9 @@ namespace Controllers {
 class PDController {
 public:
   PDController(size_t dq_filter_size, const std::array<double, 7> &K_P,
-               const std::array<double, 7> &K_D);
+               const std::array<double, 7> &K_D,
+               const bool &coriolis_compensation = false,
+               const bool &gravity_compensation = false);
 
   franka::Torques step(const franka::RobotState &state,
                        const franka::Model &model);
@@ -21,6 +23,8 @@ private:
 
   const std::array<double, 7> K_P_;
   const std::array<double, 7> K_D_;
+  bool coriolis_compensation_;
+  bool gravity_compensation_;
 
   std::array<double, 7> dq_d_;
   std::unique_ptr<double[]> dq_buffer_;
