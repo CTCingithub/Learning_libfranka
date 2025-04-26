@@ -34,6 +34,12 @@ target_link_libraries(motion-gen
     Franka::Franka
 )
 
+add_library(cosine-wave-gen SHARED src/CosineWaveGenerator.cpp)
+target_link_libraries(cosine-wave-gen
+    Eigen3::Eigen
+    Franka::Franka
+)
+
 add_library(controllers SHARED src/Controllers.cpp)
 target_link_libraries(controllers
     Eigen3::Eigen
