@@ -62,11 +62,8 @@ int main(int argc, char **argv) {
       controller_config["Omega"].as<std::array<double, 7>>();
   bool coriolis_compensation =
       controller_config["Coriolis_Compensation"].as<bool>();
-  bool gravity_compensation =
-      controller_config["Gravity_Compensation"].as<bool>();
   std::cout << "Compensation:\n"
-            << "Coriolis: " << coriolis_compensation
-            << ", Gravity: " << gravity_compensation << std::endl;
+            << "Coriolis: " << coriolis_compensation << std::endl;
 
   const int ts = controller_config["Sampling_Time"].as<int>();
   const double t_end = controller_config["End_Time"].as<double>();
@@ -76,7 +73,7 @@ int main(int argc, char **argv) {
   const size_t filter_size{1};
 
   Controllers::PDController pd_controller(filter_size, Kp, Kd,
-                                          gravity_compensation);
+                                          coriolis_compensation);
 
   try {
     franka::Robot Myrobot(robot_ip);
