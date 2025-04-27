@@ -8,12 +8,14 @@
 #include <franka/robot.h>
 #include <franka/robot_state.h>
 
-class CosineMotionGenerator {
+class CosineWaveMotionGenerator {
 public:
-  CosineMotionGenerator(const std::array<double, 7> &initial_joint_position,
-                        const std::array<double, 7> &A,
-                        const std::array<double, 7> &omega,
-                        const double &t_wave_end, const double &backing_time);
+  CosineWaveMotionGenerator(const std::array<double, 7> &initial_joint_position,
+                            const std::array<double, 7> &A,
+                            const std::array<double, 7> &omega,
+                            const double &t_wave_end,
+                            const double &backing_time,
+                            const bool &is_coefficient_solution_local = true);
 
   franka::JointPositions operator()(const franka::RobotState &robot_state,
                                     franka::Duration period);
@@ -26,11 +28,14 @@ private:
   double time_;
   double t_wave_end_;
   double backing_time_;
+  bool is_coefficient_solution_local_;
 
   std::array<double, 7> q_wave_end_;
   std::array<double, 7> dq_wave_end_;
   std::array<double, 7> ddq_wave_end_;
   std::array<std::array<double, 6>, 7> backing_trajectory_coefficients_;
+
+protected:
   std::array<double, 7>
   CosineWavePosition(const double time,
                      const std::array<double, 7> &Initial_Positions,
@@ -43,7 +48,12 @@ private:
   CosineWaveAcceleration(const double time,
                          const std::array<double, 7> &Amplitudes,
                          const std::array<double, 7> &Omegas);
-  std::array<double, 6> Polynomial_Coefficients(
+  std::array<double, 6> Polynomial_Coefficients_Local(
+      const double &duration, const double &position_start,
+      const double &velocity_start, const double &acceleration_start,
+      const double &position_end, const double &velocity_end,
+      const double &acceleration_end);
+  std::array<double, 6> Polynomial_Coefficients_Overall(
       const double &time_start, const double &time_end,
       const double &position_start, const double &velocity_start,
       const double &acceleration_start, const double &position_end,
