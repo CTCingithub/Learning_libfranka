@@ -26,6 +26,7 @@ int main(int argc, char **argv) {
 
   try {
     franka::Robot Myrobot(robot_ip);
+    Myrobot.automaticErrorRecovery();
     Reach_Desired_Joint_Pose(Myrobot, zero_pose, 0.5);
 
   } catch (const franka::Exception &e) {
