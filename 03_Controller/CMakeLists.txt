@@ -22,12 +22,18 @@ find_package(Threads REQUIRED)
 find_package(yaml-cpp REQUIRED)
 find_package(Eigen3 REQUIRED)
 
+find_package(Python3 COMPONENTS Interpreter Development)
+find_package(pybind11 REQUIRED)
+find_package(matplotlibcpp17 REQUIRED)
+
 # Build shared library
 add_library(read-config-yaml SHARED src/ReadConfig.cpp)
 target_link_libraries(read-config-yaml
     yaml-cpp::yaml-cpp
 )
 
+find_package(Python3 COMPONENTS Interpreter Development)
+find_package(pybind11 REQUIRED)
 add_library(motion-gen SHARED src/MotionGenerator.cpp)
 target_link_libraries(motion-gen
     Eigen3::Eigen
@@ -36,6 +42,12 @@ target_link_libraries(motion-gen
 
 add_library(cosine-wave-gen SHARED src/CosineWaveGenerator.cpp)
 target_link_libraries(cosine-wave-gen
+    Eigen3::Eigen
+    Franka::Franka
+)
+
+add_library(polynomial-gen SHARED src/PolynomialMotionGenerator.cpp)
+target_link_libraries(polynomial-gen
     Eigen3::Eigen
     Franka::Franka
 )
@@ -61,6 +73,17 @@ target_link_libraries(ToInitialPose
     default-behavior
 )
 
+add_executable(SwitchMotion src/SwitchMotion.cpp)
+target_link_libraries(SwitchMotion
+    Franka::Franka
+    read-config-yaml
+    default-behavior
+    cosine-wave-gen
+    polynomial-gen
+    pybind11::embed
+    matplotlibcpp17::matplotlibcpp17
+)
+
 add_executable(00_point2point examples/00_point2point.cpp)
 target_link_libraries(00_point2point
     Franka::Franka
@@ -77,11 +100,12 @@ target_link_libraries(01_cartesian_impedance_control
     default-behavior
 )
 
-add_executable(02_sampling_control examples/02_sampling_control.cpp)
-target_link_libraries(02_sampling_control
-    Franka::Franka
-    Eigen3::Eigen
-    read-config-yaml
-    default-behavior
-    controllers
-)
+# add_executable(02_sampling_control examples/02_sampling_control.cpp)
+# target_link_libraries(02_sampling_control
+#     Franka::Franka
+#     Eigen3::Eigen
+#     read-config-yaml
+#     default-behavior
+#     controllers
+#     cosine-wave-gen
+# )
