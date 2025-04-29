@@ -17,7 +17,7 @@ The dependency are shown as follows:
 I personally use *Visual Studio Code* as my editor. I swithed to [Clangd](https://clangd.llvm.org/) for code completion and other features. In order to generate workspace configuration `.clangd` file, I wrote a python script `Clangd_Setup.py`. Run the following command in terminal to collect all absolute paths:
 
 ```bash
-python Clangd_Setup.py -std=c++17 -isystem/usr/include/eigen3
+python Clangd_Setup.py -std=c++17 -isystem/usr/include/eigen3 -isystem/usr/include/python3.8
 ```
 
 Besides, the bash script [Build.sh](./Build.sh) helps you easily build with `Cmake` under your working directory, such as [00_Prelimiary/](./00_Preliminary/). Run the following command in your editor's terminal:
