@@ -6,3 +6,4 @@ lib/
 .cache/
 ModernCpp-ConcurrentProgramming-Tutorial/
 .clangd
+.csv
