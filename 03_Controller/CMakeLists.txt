@@ -21,6 +21,7 @@ endif()
 find_package(Threads REQUIRED)
 find_package(yaml-cpp REQUIRED)
 find_package(Eigen3 REQUIRED)
+find_package(spdlog REQUIRED)
 
 find_package(Python3 COMPONENTS Interpreter Development)
 find_package(pybind11 REQUIRED)
@@ -32,8 +33,6 @@ target_link_libraries(read-config-yaml
     yaml-cpp::yaml-cpp
 )
 
-find_package(Python3 COMPONENTS Interpreter Development)
-find_package(pybind11 REQUIRED)
 add_library(motion-gen SHARED src/MotionGenerator.cpp)
 target_link_libraries(motion-gen
     Eigen3::Eigen
@@ -82,6 +81,7 @@ target_link_libraries(SwitchMotion
     polynomial-gen
     pybind11::embed
     matplotlibcpp17::matplotlibcpp17
+    spdlog::spdlog
 )
 
 add_executable(00_point2point examples/00_point2point.cpp)
@@ -100,12 +100,12 @@ target_link_libraries(01_cartesian_impedance_control
     default-behavior
 )
 
-# add_executable(02_sampling_control examples/02_sampling_control.cpp)
-# target_link_libraries(02_sampling_control
-#     Franka::Franka
-#     Eigen3::Eigen
-#     read-config-yaml
-#     default-behavior
-#     controllers
-#     cosine-wave-gen
-# )
+add_executable(02_sampling_control examples/02_sampling_control.cpp)
+target_link_libraries(02_sampling_control
+    Franka::Franka
+    Eigen3::Eigen
+    read-config-yaml
+    default-behavior
+    controllers
+    cosine-wave-gen
+)
