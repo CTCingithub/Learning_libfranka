@@ -109,3 +109,13 @@ target_link_libraries(02_sampling_control
     controllers
     cosine-wave-gen
 )
+
+add_executable(03_delayed_control examples/03_delayed_control.cpp)
+target_link_libraries(03_delayed_control
+    Franka::Franka
+    Eigen3::Eigen
+    read-config-yaml
+    default-behavior
+    controllers
+    cosine-wave-gen
+)
