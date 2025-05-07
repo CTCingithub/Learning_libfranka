@@ -1,9 +1,9 @@
 #include <array>
+#include <bits/std_function.h> // #include <functional>
 #include <cmath>
-#include <functional>
 #include <iostream>
 
-#include "yaml-cpp/yaml.h"
+#include "yaml-cpp/node/node.h" // #include <yaml-cpp/yaml.h>
 #include <Eigen/Dense>
 
 #include <franka/active_control.h>
@@ -17,12 +17,6 @@
 #include "DefaultBehavior.h"
 #include "EnableArrayPrint.h"
 #include "ReadConfig.h"
-
-struct state_logger {
-  std::array<double, 7> q;
-  std::array<double, 7> dq;
-  std::array<double, 7> tau;
-};
 
 int main(int argc, char **argv) {
   // Read config file
@@ -56,9 +50,8 @@ int main(int argc, char **argv) {
 
   // Parameters
   const size_t filter_size{1};
-
-  Controllers::PDController pd_controller(filter_size, Kp, Kd,
-                                          coriolis_compensation);
+  Controllers::PDController pd_controller(Kp, Kd, coriolis_compensation,
+                                          filter_size);
 
   try {
     franka::Robot Myrobot(robot_ip);

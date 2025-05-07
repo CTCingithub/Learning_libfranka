@@ -1,5 +1,5 @@
-Sampling_Time: 1 # unit: ms
-Max_Delay_Time: 5 # unit: ms
+Sampling_Time: 5 # unit: ms
+Max_Delay_Time: 20 # unit: ms
 Switch_Time: 20 # unit: s
 Backing_Time: 5 # unit: s
 
