@@ -27,23 +27,24 @@ int constant_delay_time(const double &time) {
 int sin_delay_time(const double &time) {
   // Input in seconds
   // Output in milliseconds
-  double delay_second = 0.0025 * (sin(time) + 1);
+  double delay_second = 0.005 * (sin(2 * M_1_PI / 0.005 * time) + 1);
   return static_cast<int>(delay_second * 1000);
 }
 
 template <typename T>
 T get_delayed_state(boost::circular_buffer<T> &buffer, const int &delay_time) {
-  // Take 3ms, buffer.size = 6 as example
+  // Take t_delay = 3ms, buffer.size = 6 as example
   // For t \in [0,3]ms, state_delayed is state at 0ms, which is buffer.front()
-  // If t = 4ms, buffer is {0,1,2,3,4}, state_delayed is state at 1ms, which
-  // If t = 5ms, buffer is {0,1,2,3,4,5}, state_delayed is state at 2ms, which
-  // is buffer[2] If t = 6ms, buffer is {1,2,3,4,5,6}, state_delayed is state at
-  // 3ms, which is buffer[2] If t = 7ms, buffer is {2,3,4,5,6,7}, state_delayed
-  // is state at 4ms, which is buffer[2]
-  if (delay_time < buffer.size()) {
+  // If t = 4ms, buffer is {0,1,2,3,4}, state_delayed is state at 1ms, which is
+  // buffer[buffer.size()-1-3] If t = 5ms, buffer is {0,1,2,3,4,5},
+  // state_delayed is state at 2ms, which is buffer[buffer.size()-1-3] If t =
+  // 6ms, buffer is {1,2,3,4,5,6}, state_delayed is state at 3ms, which is
+  // buffer[buffer.size()-1-3] If t = 7ms, buffer is {2,3,4,5,6,7},
+  // state_delayed is state at 4ms, which is buffer[buffer.size()-1-3]
+  if (delay_time > buffer.size()) {
     return buffer.front();
   } else {
-    return buffer[delay_time - 1];
+    return buffer[buffer.size() - 1 - delay_time];
   }
 }
 
@@ -70,8 +71,7 @@ int main(int argc, char **argv) {
 
   // Create circular buffer to store delayed states
   int max_delay = controller_config["Max_Delay_Time"].as<int>();
-  //   boost::circular_buffer<std::array<double, 7>> q_buffer(max_delay),
-  //       dq_buffer(max_delay), q_d_buffer(max_delay), dq_d_buffer(max_delay);
+  boost::circular_buffer<double> t_buffer(max_delay);
   boost::circular_buffer<franka::RobotState> robot_state_buffer(max_delay);
 
   // Controller
@@ -88,30 +88,18 @@ int main(int argc, char **argv) {
 
     double t = 0.0;
     std::cout << std::fixed << std::setprecision(3);
-    // q_buffer.push_back(Myrobot.readOnce().q);
-    // dq_buffer.push_back(Myrobot.readOnce().dq);
-    // q_d_buffer.push_back(Myrobot.readOnce().q_d);
-    // dq_d_buffer.push_back(Myrobot.readOnce().dq_d);
+    t_buffer.push_back(t);
     robot_state_buffer.push_back(Myrobot.readOnce());
 
     auto callback_control_torque =
         [&](const franka::RobotState &robot_state,
             franka::Duration period) -> franka::Torques {
       t += period.toSec();
+      t_buffer.push_back(t);
       auto delay = sin_delay_time(t); // time-varying delay
-      // auto delay = constant_delay_time(t); // constant delay
-      //   q_buffer.push_back(robot_state.q);
-      //   dq_buffer.push_back(robot_state.dq);
-      //   q_d_buffer.push_back(robot_state.q_d);
-      //   dq_d_buffer.push_back(robot_state.dq_d);
-      //   auto q_delay = get_delayed_state(q_buffer, constant_delay_time(t));
-      //   auto dq_delay = get_delayed_state(dq_buffer, constant_delay_time(t));
-      //   auto q_d_delay = get_delayed_state(q_d_buffer,
-      //   constant_delay_time(t)); auto dq_d_delay =
-      //   get_delayed_state(dq_d_buffer, constant_delay_time(t)); auto torque =
-      //   pd_controller.step(q_delay, dq_delay, q_d_delay, dq_d_delay,
-      //                                    robot_state, Mymodel);
-      std::cout << "t: " << t << "s, delay: " << delay << "ms" << std::endl;
+      std::cout << "current time is " << t << "s, using state of "
+                << get_delayed_state(t_buffer, delay) << "s, delay is "
+                << delay / 1000.0 << "s" << std::endl;
       robot_state_buffer.push_back(robot_state);
       auto robot_state_delay = get_delayed_state(robot_state_buffer, delay);
       auto torque = pd_controller.step(robot_state_delay, Mymodel);
