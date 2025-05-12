@@ -141,14 +141,17 @@ int main(int argc, char **argv) {
   async_logger_dq->set_pattern("%v");
   async_logger_tau->set_pattern("%v");
   async_logger_q->info("time,q_1,q_2,q_3,q_4,q_5,q_6,q_7");
-  async_logger_q->flush();
   async_logger_dq->info("time,dq_1,dq_2,dq_3,dq_4,dq_5,dq_6,dq_7");
-  async_logger_dq->flush();
   async_logger_tau->info("time,tau_1,tau_2,tau_3,tau_4,tau_5,tau_6,tau_7");
+  async_logger_q->flush();
+  async_logger_dq->flush();
   async_logger_tau->flush();
   async_logger_q->set_pattern("%Y-%m-%d %H:%M:%S.%f,%v");
   async_logger_dq->set_pattern("%Y-%m-%d %H:%M:%S.%f,%v");
   async_logger_tau->set_pattern("%Y-%m-%d %H:%M:%S.%f,%v");
+  async_logger_q->flush();
+  async_logger_dq->flush();
+  async_logger_tau->flush();
   RecordStruct Record;
 
   try {
@@ -230,6 +233,7 @@ int main(int argc, char **argv) {
       return position_command;
     };
 
+    // Directly use trajectory data in std::vector failed
     // auto callback_motion =
     //     [&](const franka::RobotState &robot_state,
     //         franka::Duration period) -> franka::JointPositions {
@@ -260,6 +264,7 @@ int main(int argc, char **argv) {
       motion_finished = joint_positions.motion_finished;
       active_control->writeOnce(joint_positions);
       if (is_logging) {
+        // Logging in async way failed.
         // async_log_state(async_logger_q, Record.q, Record.mutex);
         // async_log_state(async_logger_dq, Record.dq, Record.mutex);
         // async_log_state(async_logger_tau, Record.tau, Record.mutex);
